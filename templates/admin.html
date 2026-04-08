@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-6">Admin panel</h1>
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <h2 class="text-xl font-semibold mb-2">Yangi kino qo'shish</h2>
+            <form action="/admin/add" method="post" class="space-y-3">
+                <input type="text" name="title" placeholder="Nom" required class="w-full p-2 border rounded">
+                <textarea name="description" placeholder="Tavsif" class="w-full p-2 border rounded"></textarea>
+                <input type="text" name="file_id" placeholder="Telegram file_id" required class="w-full p-2 border rounded">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Qo'shish</button>
+            </form>
+            <p class="text-sm text-gray-500 mt-2">Eslatma: Kinoni yuklash uchun bot orqali video yuborish tavsiya etiladi.</p>
+        </div>
+        <h2 class="text-2xl font-semibold mb-4">Mavjud kinolar</h2>
+        <div class="space-y-3">
+            {% for movie in movies %}
+            <div class="bg-white rounded-lg shadow p-4">
+                <form action="/admin/edit/{{ movie.id }}" method="post" class="flex flex-col md:flex-row gap-2 items-start">
+                    <div class="flex-1">
+                        <input type="text" name="title" value="{{ movie.title }}" class="w-full p-1 border rounded mb-1">
+                        <textarea name="description" class="w-full p-1 border rounded">{{ movie.description }}</textarea>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Saqlash</button>
+                        <button formaction="/admin/delete/{{ movie.id }}" formmethod="post" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">O'chirish</button>
+                    </div>
+                </form>
+                <p class="text-sm text-gray-500 mt-1">#{{ movie.movie_number }} | Ko'rishlar: {{ movie.views_count }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
